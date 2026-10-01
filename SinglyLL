@@ -1,0 +1,132 @@
+// Online C++ compiler (editor)
+// Write and run C++ online using this editor.
+
+#include <iostream>
+using namespace std;
+class node{
+    public:
+    int data;
+    node*next;
+
+    node(int value){
+        data=value;
+        next=nullptr;
+    }
+};
+void insertathead(int value,node*&head,node*&tail){
+if(head==nullptr && tail==nullptr){
+    node*newnode=new node(value);
+    head=newnode;
+    tail=newnode;
+}
+else{
+    node*newnode=new node(value);
+        newnode->next=head;
+        head=newnode;
+}
+}
+void insertattail(int value,node*&head,node*&tail){
+    if(head==nullptr && tail==nullptr){
+        node*newnode=new node(value);
+        head=newnode;
+        tail=newnode;
+    }
+    else{
+        node*newnode=new node(value);
+        tail->next=newnode;
+        tail=newnode;
+    }
+}
+int length(node*&head){
+    node*temp=head;
+    int count=0;
+    while(temp!=nullptr){
+        count++;
+        temp=temp->next;
+    }
+    return count;
+}
+void insertatpos(int position,int value,node*&head,node*&tail){
+    if(position==1){
+        insertathead(value,head,tail);
+        return;
+    }
+    int tlength=length(head);
+    if(position==tlength+1){
+        insertattail(value,head,tail);
+        return;
+    }
+    else{
+        node*newnode=new node(value);
+        node*temp=head;
+        for(int i=1;i<=position-2;i++){
+            temp=temp->next;
+        }
+        newnode->next=temp->next;
+        temp->next=newnode;
+        
+    }
+}
+void deletepos(int position,node*&head,node*&tail){
+    if(head==nullptr && tail==nullptr){
+        return;
+    }
+    int len=length(head);
+    if(position>len){
+        return;
+    }
+    if(position==1){
+        node*temp=head;
+        head=head->next;
+        temp->next=nullptr;
+        delete temp;
+        return;
+    }
+    else{
+        node*prev=head;
+        for(int i=1;i<=position-2;i++){
+        prev=prev->next;
+            
+    }
+        node*curr=prev->next;
+        node*forword=curr->next;
+        curr->next=nullptr;
+        prev->next=forword;
+        delete curr;
+        
+    }
+    if(head==tail && position==1){
+        node*temp=head;
+        head=nullptr;
+        tail=nullptr;
+        delete temp;
+        return;
+    }
+    
+}
+
+void print(node*head){
+    node*temp=head;
+    while(temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+}
+int main() {
+    node*head=nullptr;
+    node*tail=nullptr;
+    // insertathead(10,head,tail);
+    //  insertathead(20,head,tail);
+    //  insertathead(20,head,tail);
+    // insertattail(20,head,tail);
+    //  insertattail(30,head,tail);
+    length(head);
+    insertatpos(1,10,head,tail);
+    insertatpos(2,20,head,tail);
+    insertatpos(3,30,head,tail);
+    insertatpos(4,40,head,tail);
+    deletepos(1,head,tail);
+   print(head);
+    
+
+}
